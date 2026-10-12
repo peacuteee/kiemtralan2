@@ -19,6 +19,25 @@
             android:text="@string/thong_tin_sinh_vien"
             android:textSize="16sp"
             android:textStyle="bold" />
+        <EditText
+            android:id="@+id/edtTenCongViec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="24dp"
+            android:hint="@string/goi_y_ten_cong_viec"
+            android:importantForAutofill="no"
+            android:inputType="text"
+            android:minHeight="48dp" />
 
+        <EditText
+            android:id="@+id/edtMoTaCongViec"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:gravity="top"
+            android:hint="@string/goi_y_mo_ta_cong_viec"
+            android:importantForAutofill="no"
+            android:inputType="textMultiLine"
+            android:minLines="3" />
     </LinearLayout>
 </ScrollView>

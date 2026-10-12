@@ -1,4 +1,5 @@
 <resources>
     <string name="thong_tin_sinh_vien">Họ tên: Trần Thanh Tài\nMã sinh viên: 23115053122139\nLớp HP: 126TLTDD01</string>
-
+    <string name="goi_y_ten_cong_viec">SV</string>
+    <string name="goi_y_mo_ta_cong_viec">SPKT</string>
 </resources>
