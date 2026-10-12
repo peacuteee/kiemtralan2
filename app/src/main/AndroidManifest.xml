@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Quanlycongviec">
         <activity
+            android:name=".ChinhSuaCongViecActivity"
+            android:exported="false" />
+        <activity
             android:name=".ChiTietCongViecActivity"
             android:exported="false" />
         <activity
