@@ -1,26 +1,34 @@
 package com.example.quanlycongviec
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.TextView
-import androidx.activity.enableEdgeToEdge
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.view.ViewCompat
-import androidx.core.view.WindowInsetsCompat
+import androidx.core.content.IntentCompat
 
 class ChiTietCongViecActivity : AppCompatActivity() {
 
     private lateinit var tvTenCongViec: TextView
     private lateinit var tvMoTaCongViec: TextView
+    private lateinit var tvThongTinCongViec: TextView
+    private lateinit var btnChinhSua: Button
 
-    // Đặt ở đây: trong class, trước onCreate
-    private val trinhMoChinhSua =
+    private lateinit var congViec: CongViec
+
+    private val trinhMoChinhSua: ActivityResultLauncher<Intent> =
         registerForActivityResult(ActivityResultContracts.StartActivityForResult()) { ketQua ->
             if (ketQua.resultCode == Activity.RESULT_OK) {
-                val duLieu = ketQua.data
-                tvTenCongViec.text = duLieu?.getStringExtra(MainActivity.KHOA_TEN_CONG_VIEC).orEmpty()
-                tvMoTaCongViec.text = duLieu?.getStringExtra(MainActivity.KHOA_MO_TA_CONG_VIEC).orEmpty()
+                val congViecMoi = ketQua.data?.let {
+                    IntentCompat.getParcelableExtra(it, MainActivity.KHOA_CONG_VIEC, CongViec::class.java)
+                }
+                if (congViecMoi != null) {
+                    congViec = congViecMoi
+                    hienThiCongViec()
+                }
             }
         }
 
@@ -30,12 +38,23 @@ class ChiTietCongViecActivity : AppCompatActivity() {
 
         tvTenCongViec = findViewById(R.id.tvTenCongViec)
         tvMoTaCongViec = findViewById(R.id.tvMoTaCongViec)
+        tvThongTinCongViec = findViewById(R.id.tvThongTinCongViec)
+        btnChinhSua = findViewById(R.id.btnChinhSua)
 
-        findViewById<Button>(R.id.btnChinhSua).setOnClickListener {
+        congViec = IntentCompat.getParcelableExtra(intent, MainActivity.KHOA_CONG_VIEC, CongViec::class.java)
+            ?: CongViec("", "")
+        hienThiCongViec()
+
+        btnChinhSua.setOnClickListener {
             val intentChinhSua = Intent(this, ChinhSuaCongViecActivity::class.java)
-            intentChinhSua.putExtra(MainActivity.KHOA_TEN_CONG_VIEC, tvTenCongViec.text.toString())
-            intentChinhSua.putExtra(MainActivity.KHOA_MO_TA_CONG_VIEC, tvMoTaCongViec.text.toString())
-            trinhMoChinhSua.launch(intentChinhSua) // dùng ở đây để mở màn hình chỉnh sửa
+            intentChinhSua.putExtra(MainActivity.KHOA_CONG_VIEC, congViec)
+            trinhMoChinhSua.launch(intentChinhSua)
         }
+    }
+
+    private fun hienThiCongViec() {
+        tvTenCongViec.text = congViec.tenCongViec
+        tvMoTaCongViec.text = congViec.moTa
+        tvThongTinCongViec.text = congViec.layThongTin()
     }
 }
